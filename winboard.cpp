@@ -286,7 +286,7 @@ void parse_input_setboard(const char* s,Engine* pE)
 	if (s == NULL) {
         std::cout << "Usage:setboard <FENString>" << std::endl;
         std::cout << std::endl;
-        return; //@todo
+        return;
     }
 
 	if(!readFen(&pE->currentPosition,s))
@@ -360,7 +360,7 @@ void parse_input_perft(const char* s,Engine* pE)
     if (s == NULL) {
         std::cout << "Usage:perft <depth>" << std::endl;
         std::cout << std::endl;
-        return; //@todo
+        return;
     }
 
     for(int q=1; q<=atoi(s); q++)
@@ -390,7 +390,7 @@ void parse_input_perftfast(const char* s, Engine* pE) {
     if (s == NULL) {
         std::cout << "Usage:perftfast <depth>" << std::endl;
         std::cout << std::endl;
-        return; //@todo
+        return;
     }
 
 	for (int q = 1; q <= atoi(s); q++)
@@ -414,7 +414,7 @@ void parse_input_divide(const char* s, Engine* pE)
     if (s == NULL) {
         std::cout << "Usage:divide <depth>" << std::endl;
         std::cout << std::endl;
-        return; //@todo
+        return;
     }
 
     int depth;
@@ -477,7 +477,7 @@ void parse_input_dividefast(const char* s, Engine* pE)
     if (s == NULL) {
         std::cout << "Usage:dividefast <depth>" << std::endl;;
         std::cout << std::endl;
-        return; //@todo
+        return;
     }
 
     int depth;
@@ -520,7 +520,7 @@ void parse_input_memory(const char* s, Engine* pE) {
         std::cout << "Usage:memory <bytes>" << std::endl;;
         std::cout << "attempt to (re)allocate *bytes* bytes of memory for the hashtables" << std::endl;;
         std::cout << std::endl;
-        return; //@todo
+        return;
     }
     uint64_t BytesRequested = _atoi64(s);
     setMemory(BytesRequested);
@@ -530,7 +530,7 @@ void parse_input_cores(const char* s, Engine* pE) {
         std::cout << "Usage:cores <n>" << std::endl;
         std::cout << "use n threads for calculations" << std::endl;
         std::cout << std::endl;
-        return; //@todo
+        return;
     }
 
     pE->nNumCores = std::max(1, std::min(atoi(s), MAX_THREADS));
