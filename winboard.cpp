@@ -340,7 +340,7 @@ void parse_input_perft(const char* s,Engine* pE)
 			PerftInfo T;
 			T.nMoves = T.nCapture = T.nEPCapture = T.nCastle = T.nCastleLong = T.nPromotion = 0;
 			perftMT(pE->currentPosition,q,1,&T);
-			printf("Perft %d: %lld \nTotal Captures= %lld Castles= %lld CastleLongs= %lld EPCaptures= %lld Promotions= %lld\n",
+            printf("Perft %d: %lld \nTotal Captures= %lld Castles= %lld CastleLongs= %lld EPCaptures= %lld Promotions= %lld\n",
 				q,
 				T.nMoves,
 				T.nCapture + T.nEPCapture,
@@ -349,6 +349,7 @@ void parse_input_perft(const char* s,Engine* pE)
 				T.nEPCapture,
 				T.nPromotion
 				);
+            timer.bench(T.nMoves);
 			printf("\n");
 		}
 	}
