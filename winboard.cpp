@@ -193,16 +193,10 @@ bool waitForInput(Engine* pE)
                 list.push_back(ws);
             }
             int code;
-            std::cout << Distance::process(command, list, code) << std::endl;
-
-                /**
-
-
-    for (int i = 0; i < 6; i++) {
-        std::cout <<trials[i] << ": " << Similarity::process(trials[i], list, code) <<std::endl;
-    }
-    return 0;
-                 * */
+            if (command=="exit")
+                std::cout <<"do you mean the command 'help'?";
+            else
+                std::cout << Distance::process(command, list, code) << std::endl;
 		}
 		free(input);
 	}
