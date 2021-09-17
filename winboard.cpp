@@ -60,6 +60,10 @@ std::ofstream logfile("perft.txt");
 
 WinboardInputCommandDefinition winboardInputCommands[]=
 {
+
+
+
+
 	{"xboard",parse_input_xboard,false},
 	{"protover",parse_input_protover,false},						/* N */
 	{"accepted",parse_input_accepted,false},
@@ -279,8 +283,11 @@ void parse_input_draw(const char* s,Engine* pE){}
 void parse_input_result(const char* s,Engine* pE){}				
 void parse_input_setboard(const char* s,Engine* pE)
 {
-	if (s == NULL)
-		return;
+	if (s == NULL) {
+        std::cout << "Usage:setboard <FENString>" << std::endl;
+        std::cout << std::endl;
+        return; //@todo
+    }
 
 	if(!readFen(&pE->currentPosition,s))
 		send_output_tellusererror("Illegal Position",pE);
@@ -350,10 +357,13 @@ void parse_input_showhash(const char* s,Engine* pE)
 
 void parse_input_perft(const char* s,Engine* pE)
 {
-	if (s == NULL)
-		return;
+    if (s == NULL) {
+        std::cout << "Usage:perft <depth>" << std::endl;
+        std::cout << std::endl;
+        return; //@todo
+    }
 
-	for(int q=1; q<=atoi(s); q++)
+    for(int q=1; q<=atoi(s); q++)
 	{
 		{
 			RaiiTimer timer;
@@ -376,9 +386,12 @@ void parse_input_perft(const char* s,Engine* pE)
 }
 
 void parse_input_perftfast(const char* s, Engine* pE) {
-	
-	if (s == NULL)
-		return;
+
+    if (s == NULL) {
+        std::cout << "Usage:perftfast <depth>" << std::endl;
+        std::cout << std::endl;
+        return; //@todo
+    }
 
 	for (int q = 1; q <= atoi(s); q++)
 	{
@@ -398,10 +411,13 @@ void parse_input_perftfast(const char* s, Engine* pE) {
 
 void parse_input_divide(const char* s, Engine* pE)
 {
-	if (s == NULL)
-		return;
+    if (s == NULL) {
+        std::cout << "Usage:divide <depth>" << std::endl;
+        std::cout << std::endl;
+        return; //@todo
+    }
 
-	int depth;
+    int depth;
 	depth = std::max(2,atoi(s));
 
 	ChessMove MoveList[MOVELIST_SIZE];
@@ -458,10 +474,13 @@ void parse_input_divide(const char* s, Engine* pE)
 
 void parse_input_dividefast(const char* s, Engine* pE) 
 {
-	if (s == NULL)
-		return;
+    if (s == NULL) {
+        std::cout << "Usage:dividefast <depth>" << std::endl;;
+        std::cout << std::endl;
+        return; //@todo
+    }
 
-	int depth;
+    int depth;
 	depth = std::max(2, atoi(s));
 
 	ChessMove MoveList[MOVELIST_SIZE];
@@ -497,18 +516,24 @@ void parse_input_lookuphash(const char* s, Engine* pE)
 }
 
 void parse_input_memory(const char* s, Engine* pE) {
-	uint64_t BytesRequested = _atoi64(s);
-	if (s == NULL)
-		return; 
-
-	setMemory(BytesRequested);
+    if (s == NULL) {
+        std::cout << "Usage:memory <bytes>" << std::endl;;
+        std::cout << "attempt to (re)allocate *bytes* bytes of memory for the hashtables" << std::endl;;
+        std::cout << std::endl;
+        return; //@todo
+    }
+    uint64_t BytesRequested = _atoi64(s);
+    setMemory(BytesRequested);
 }
 void parse_input_cores(const char* s, Engine* pE) {
-	
-	if (s == NULL)
-		return;
+    if (s == NULL) {
+        std::cout << "Usage:cores <n>" << std::endl;
+        std::cout << "use n threads for calculations" << std::endl;
+        std::cout << std::endl;
+        return; //@todo
+    }
 
-	pE->nNumCores = std::max(1, std::min(atoi(s), MAX_THREADS));
+    pE->nNumCores = std::max(1, std::min(atoi(s), MAX_THREADS));
 }
 void parse_input_egtpath(const char* s, Engine* pE) {}
 void parse_input_option(const char* s, Engine* pE) {}
@@ -540,7 +565,7 @@ void parse_input_testExternal(const char* s, Engine* pE) {
 	}
 
 	if (badArgs) {
-		std::cout << "\nUsage: text-external <path to external app> <depth>\n\n";
+		std::cout << "Usage: test-external <path to external app> <depth>\n\n";
 		std::cout << "This will issue the following system command for each test position\n";
 		std::cout << "<external app> \"<Fen String>\" <depth> <perft value>\n";
 		std::cout << "external app is expected to terminate with EXIT_SUCCESS (0) if it agrees with\n";

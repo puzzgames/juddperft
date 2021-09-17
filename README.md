@@ -51,7 +51,7 @@ Accepted commands are as follows:
 
 **showhash** - display hash table statistics
 
-**text-external** &lt;path to external app&gt; &lt;depth&gt;
+**test-external** &lt;path to external app&gt; &lt;depth&gt;
 
 **quit** - exit the app
 
@@ -78,7 +78,7 @@ It uses an automated divide-and-conquer approach to attempt zoom-in on exactly w
 
 The command is:
 
-**text-external** &lt;path to external app&gt; &lt;depth&gt;
+**test-external** &lt;path to external app&gt; &lt;depth&gt;
 
 This will issue the following system command for each test position:
 **&lt;external app&gt; "&lt;Fen String&gt;" &lt;depth&gt; &lt;perft value&gt;**
