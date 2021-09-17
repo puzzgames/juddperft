@@ -97,7 +97,7 @@ void parse_input_nps(const char* s, Engine* pE);
 void parse_input_time(const char* s,Engine* pE);				
 void parse_input_otim(const char* s,Engine* pE); 
 void parse_input_move(const char* s,Engine* pE); 
-void parse_input_usermove(const char* s,Engine* const pE);			
+void parse_input_usermove(const char* s,Engine* const pE);
 void parse_input_movenow(const char* s,Engine* pE); 
 void parse_input_ping(const char* s,Engine* pE);				
 void parse_input_draw(const char* s,Engine* pE); 

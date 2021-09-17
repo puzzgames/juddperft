@@ -35,6 +35,7 @@ SOFTWARE.
 #include "Juddperft.h"
 #include "raiitimer.h"
 #include "diagnostics.h"
+#include "Distance.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -176,12 +177,31 @@ bool waitForInput(Engine* pE)
 					}
 					// separate command from remainder of string
 					args=strtok(NULL,"\n" /* note: deliberately ignore spaces */);
+                    if (!winboardInputCommands[i].implemented)
+                        std::cout << "command not yet implemented" << std::endl;
 					winboardInputCommands[i].pF(args,pE); // invoke handler for function
 					return true;
 				}
 			}
 			// still here ? OK, we interpret input as a move:
-			parse_input_usermove(command,pE);
+			// parse_input_usermove(command,pE); - not implemented yet
+            std::vector<WordScores> list;
+            for(int i=0;i<nRecognizedCommands;i++) {
+                auto &item = winboardInputCommands[i];
+                WordScores ws(item.pzCommandString, (int)item.implemented);
+                list.push_back(ws);
+            }
+            int code;
+            std::cout << Distance::process(command, list, code) << std::endl;
+
+                /**
+
+
+    for (int i = 0; i < 6; i++) {
+        std::cout <<trials[i] << ": " << Similarity::process(trials[i], list, code) <<std::endl;
+    }
+    return 0;
+                 * */
 		}
 		free(input);
 	}
@@ -252,7 +272,7 @@ void parse_input_nps(const char* s, Engine* pE) {}
 void parse_input_time(const char* s,Engine* pE){}				
 void parse_input_otim(const char* s,Engine* pE){} 
 void parse_input_move(const char* s,Engine* pE){} 
-void parse_input_usermove(const char* s,Engine* const pE){}		
+void parse_input_usermove(const char* s,Engine* const pE){}
 void parse_input_movenow(const char* s,Engine* pE){} 
 void parse_input_ping(const char* s,Engine* pE){}				
 void parse_input_draw(const char* s,Engine* pE){} 
