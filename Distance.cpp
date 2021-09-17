@@ -114,7 +114,7 @@ std::string Distance::process(std::string myword, std::vector<WordScores> list, 
     int maxpriority = first.priority;
     std::string result;
     if (count==1) {
-        result = "do you mean about ";
+        result = "do you mean the ";
         if (maxpriority>0) {
             result+="command ";
             code = 2;
@@ -126,7 +126,7 @@ std::string Distance::process(std::string myword, std::vector<WordScores> list, 
         result += "'"+first.word+"'";
         return result+"?";
     } else {
-        result = "do you mean about one of ";
+        result = "do you mean any of the ";
         if (maxpriority>0) {
             result+="commands";
             code = 4;
