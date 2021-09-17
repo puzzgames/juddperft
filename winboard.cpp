@@ -60,17 +60,12 @@ std::ofstream logfile("perft.txt");
 
 WinboardInputCommandDefinition winboardInputCommands[]=
 {
-
-
-
-
-	{"xboard",parse_input_xboard,false},
+    {"xboard",parse_input_xboard,false},
 	{"protover",parse_input_protover,false},						/* N */
 	{"accepted",parse_input_accepted,false},
 	{"rejected",parse_input_rejected,false},
 	{"new",parse_input_new,false},
-	{"variant",parse_input_variant,false},						/* VARNAME */ 
-	{"quit",parse_input_quit,true},
+	{"variant",parse_input_variant,false},						/* VARNAME */
 	{"random",parse_input_random,false},
 	{"force",parse_input_force,false},
 	{"go",parse_input_go,false},
@@ -89,7 +84,7 @@ WinboardInputCommandDefinition winboardInputCommands[]=
 	{"ping",parse_input_ping,false},							/* N */
 	{"draw",parse_input_draw,false},
 	{"result",parse_input_result,false},						/* RESULT {COMMENT} */ 
-	{"setboard",parse_input_setboard,true},						/* FEN */ 
+	{"setboard",parse_input_setboard,true},						/* FEN */
 	{"edit",parse_input_edit,false},
 	{"hint",parse_input_hint,false},
 	{"bk",parse_input_bk,false},
@@ -122,7 +117,9 @@ WinboardInputCommandDefinition winboardInputCommands[]=
 	{ "dividefast",parse_input_dividefast,true },
 	{"writehash",parse_input_writehash,false},
 	{"lookuphash",parse_input_lookuphash,false},
-	{"test-external", parse_input_testExternal,true}
+	{"test-external", parse_input_testExternal,true},
+    {"quit",parse_input_quit,true},
+    {"help",parse_input_help,true}
 };
 
 int winBoard(Engine* pE)
@@ -261,8 +258,11 @@ void parse_input_accepted(const char* s,Engine* pE){}
 void parse_input_rejected(const char* s,Engine* pE){}
 void parse_input_new(const char* s,Engine* pE){} 
 void parse_input_variant(const char* s,Engine* pE){}			
-void parse_input_quit(const char* s,Engine* pE){} 
-void parse_input_random(const char* s,Engine* pE){} 
+void parse_input_quit(const char* s,Engine* pE){}
+void parse_input_help(const char* s,Engine* pE) {
+    winBoard(pE);
+}
+void parse_input_random(const char* s,Engine* pE){}
 void parse_input_force(const char* s,Engine* pE){} 
 void parse_input_go(const char* s,Engine* pE){} 
 void parse_input_playother(const char* s,Engine* pE){} 
