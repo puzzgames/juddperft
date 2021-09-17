@@ -565,11 +565,12 @@ void parse_input_testExternal(const char* s, Engine* pE) {
 	}
 
 	if (badArgs) {
-		std::cout << "Usage: test-external <path to external app> <depth>\n\n";
+		std::cout << "Usage: test-external <path to external app> <depth>\n";
 		std::cout << "This will issue the following system command for each test position\n";
 		std::cout << "<external app> \"<Fen String>\" <depth> <perft value>\n";
 		std::cout << "external app is expected to terminate with EXIT_SUCCESS (0) if it agrees with\n";
 		std::cout << "the perft value for the given position\n" << std::endl;
+        std::cout << "the simplest test: test-external ./juddperft 2\n" << std::endl;
 	}
 
 #endif
