@@ -340,7 +340,7 @@ void parse_input_perft(const char* s,Engine* pE)
 			PerftInfo T;
 			T.nMoves = T.nCapture = T.nEPCapture = T.nCastle = T.nCastleLong = T.nPromotion = 0;
 			perftMT(pE->currentPosition,q,1,&T);
-            printf("Perft %d: %lld \nTotal Captures= %lld Castles= %lld CastleLongs= %lld EPCaptures= %lld Promotions= %lld\n",
+            printf("\nPerft %d: %lld \nTotal Captures= %lld Castles= %lld CastleLongs= %lld EPCaptures= %lld Promotions= %lld\n",
 				q,
 				T.nMoves,
 				T.nCapture + T.nEPCapture,
@@ -366,9 +366,10 @@ void parse_input_perftfast(const char* s, Engine* pE) {
 			RaiiTimer timer;
 			int64_t nNumPositions = 0;
 			perftFastMT(pE->currentPosition, q, nNumPositions);
-			printf("Perft %d: %" PRIu64 "\n",
+			printf("\nPerft %d: %" PRIu64 "\n",
 				q,nNumPositions
 				);
+            timer.bench(nNumPositions);
 			printf("\n");
 			
 		}
@@ -402,7 +403,7 @@ void parse_input_divide(const char* s, Engine* pE)
 	
 		T.nMoves = T.nCapture = T.nEPCapture = T.nCastle = T.nCastleLong = T.nPromotion = 0;
 		perftMT(Q, depth-1, 1, &T);
-		printf("Perft %d: %lld \nTotal Captures= %lld Castles= %lld CastleLongs= %lld EPCaptures= %lld Promotions= %lld\n",
+		printf("\nPerft %d: %lld \nTotal Captures= %lld Castles= %lld CastleLongs= %lld EPCaptures= %lld Promotions= %lld\n",
 			depth-1,
 			T.nMoves,
 			T.nCapture + T.nEPCapture,
@@ -411,7 +412,7 @@ void parse_input_divide(const char* s, Engine* pE)
 			T.nEPCapture,
 			T.nPromotion
 			);
-		
+        timer.bench(T.nMoves);
 		printf("\n");
 
 		GT.nMoves += T.nMoves;
@@ -458,7 +459,7 @@ void parse_input_dividefast(const char* s, Engine* pE)
 		dumpMove(*pM, LongAlgebraicNoNewline);
 		int64_t nNumPositions = 0;
 		perftFastMT(Q, depth-1, nNumPositions);
-		printf("Perft %d: %lld \n",
+		printf("\nPerft %d: %lld \n",
 			depth-1, nNumPositions
 			);
 		GrandTotal += nNumPositions;

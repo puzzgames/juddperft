@@ -12,6 +12,9 @@
 
 #include <iostream>
 #include <chrono>
+#include <iomanip>
+
+const int delayAtStart = 500;
 
 class RaiiTimer {
 public:
@@ -23,14 +26,24 @@ public:
 
     void bench(int64_t count) {
         endTimer = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTimer - beginTimer).count();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTimer - beginTimer).count()-delayAtStart;
+        if (duration<0) duration += delayAtStart;
         std::cout << "Time=" << duration << " ms" << std::endl;
-        if (duration<700) { //without small not accurace
+        if (duration<10) { //without small not accurace
             std::cout << "Inaccurate bench" << std::endl;
         } else {
-            std::cout << (double)duration/count*1e6 << " ns per move " << (double)count/duration/1000 << " mln per second" << std::endl;
+            std::cout << std::fixed;
+            std::cout << std::setprecision(1);
+            std::cout << (double)duration/count*1e6 << " ns per move, " << (double)count/duration/1000 << " mln per second" << std::endl;
         }
     }
+
+    int64_t getDuration() {
+        endTimer = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTimer - beginTimer).count();
+        return duration;
+    }
+
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> beginTimer;
     std::chrono::time_point<std::chrono::high_resolution_clock> endTimer;

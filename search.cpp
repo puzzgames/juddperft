@@ -27,6 +27,8 @@ SOFTWARE.
 #include "search.h"
 #include "movegen.h"
 #include "engine.h"
+#include "raiitimer.h"
+#include "strutils.h"
 
 #include <thread>
 #include <cassert>
@@ -36,6 +38,7 @@ SOFTWARE.
 #include <condition_variable>
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 
 namespace juddperft {
 
@@ -390,10 +393,13 @@ void perftMT(ChessPosition P, int maxdepth, int depth, PerftInfo* pI)
 
 			// Thread is to sleep until there is something to do ... and then wake up and do it.
 			std::unique_lock<std::mutex> lock(q_mutex);
-			std::chrono::milliseconds startDelay(500);
+			std::chrono::milliseconds startDelay(delayAtStart);
 			cv.wait_for(lock, startDelay, [ready] { return ready; }); // sleep until something to do (note: lock will be auto-acquired on wake-up)
 			
 			// upon wake-up (lock acquired):
+            RaiiTimer timer;
+            int initialCount = MoveQueue.size();
+            std::cout << "\rcalc...";
 			while (!MoveQueue.empty()) {
 				PerftInfo T;
 				T.nCapture = T.nCastle = T.nCastleLong = T.nEPCapture = T.nMoves = T.nPromotion = ZERO_64;
@@ -402,8 +408,13 @@ void perftMT(ChessPosition P, int maxdepth, int depth, PerftInfo* pI)
 				MoveQueue.pop();								// remove Move from queue:
 				lock.unlock();									// yield usage of queue to other threads while busy processing perft												
 				Q.performMove(M).switchSides();					// make move
-				perft(Q, maxdepth, depth + 1, &T);				// Invoke perft()
-				std::cout << ".";								// show progress
+				perft(Q, maxdepth, depth + 1, &T);	    // Invoke perft()
+                double duration = timer.getDuration();
+                double oneTime = duration/std::max(initialCount - (int64_t)MoveQueue.size(),1L);
+                double estimatedWholeTime = oneTime*initialCount;
+                double remainingTime = oneTime*MoveQueue.size();
+                if (remainingTime>0)
+                    std::cout << "\r" + ms_to_smh(remainingTime) + "/" + ms_to_smh(estimatedWholeTime); // show progress
 				lock.lock();									// lock the queue again	for next iteration
 				PerftPartial.push_back(T);						// record subtotals
 			}
@@ -475,11 +486,14 @@ void perftFastMT(ChessPosition P, int depth, int64_t& nNodes)
 
 			// Thread is to sleep until there is something to do ... and then wake up and do it.
 			std::unique_lock<std::mutex> lock(q_mutex);
-			std::chrono::milliseconds startDelay(500);
+			std::chrono::milliseconds startDelay(delayAtStart);
 			cv.wait_for(lock, startDelay, [ready] { return ready; }); // sleep until something to do (note: lock will be auto-acquired on wake-up)
 			
 			// upon wake-up (lock acquired):
-			while (!MoveQueue.empty()) {
+            RaiiTimer timer;
+            int initialCount = MoveQueue.size();
+            std::cout << "\rcalc...";
+            while (!MoveQueue.empty()) {
 				int64_t s = ZERO_64; 							// local accumulator for thread
 				ChessPosition Q = P;							// Set up position
 				ChessMove M = MoveQueue.front();				// Grab Move
@@ -487,7 +501,12 @@ void perftFastMT(ChessPosition P, int depth, int64_t& nNodes)
 				lock.unlock();									// yield usage of queue to other threads while busy processing perft												
 				Q.performMove(M).switchSides();					// make move
 				perftFast(Q, depth - 1, s);						// Invoke perftFast()
-				std::cout << ".";								// show progress
+                double duration = timer.getDuration();
+                double oneTime = duration/std::max(initialCount - (int64_t)MoveQueue.size(),1L);
+                double estimatedWholeTime = oneTime*initialCount;
+                double remainingTime = oneTime*MoveQueue.size();
+                if (remainingTime>0)
+                    std::cout << "\r" + ms_to_smh(remainingTime) + "/" + ms_to_smh(estimatedWholeTime); // show progress
 				lock.lock();									// lock the queue again	for next iteration
 				subTotal.push_back(s);							// record subtotal
 			}
