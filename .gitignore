@@ -228,3 +228,7 @@ ModelManifest.xml
 
 x64/Release
 Release
+juddperft-gcc
+cmake-build-debug
+cmake-build-release
+.idea
